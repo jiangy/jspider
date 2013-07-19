@@ -74,7 +74,7 @@ public class Spider {
 
 	public void crawl(List<String> urlList) {
 		PoolingClientConnectionManager cm = new PoolingClientConnectionManager();
-        cm.setMaxTotal(threadNum);
+		cm.setMaxTotal(threadNum);
 		HttpClient httpClient = new DefaultHttpClient(cm);
 		ExecutorService exec = Executors.newFixedThreadPool(threadNum);
 		List<Future<List<List<String>>>> theadResult = new ArrayList<Future<List<List<String>>>>();
