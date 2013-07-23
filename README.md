@@ -1,7 +1,7 @@
 jspider
 =======
 
-A easy java spider library.
+A easy, multithreaded and based on regular expression java spider library.
 
 How to start
 ------------
