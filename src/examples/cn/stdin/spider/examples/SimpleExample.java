@@ -24,8 +24,7 @@ public class SimpleExample {
 		Spider spider = new Spider(regRecord, regFieldList, 1);
 		
 		// Crawl a url and print result.
-		spider.crawl("http://pipes.yahoo.com/pipes/pipes.popular");
-		System.out.println(spider.getResult());
+		System.out.println(spider.crawl("http://pipes.yahoo.com/pipes/pipes.popular"));
 		
 		// Create a url list
 		List<String> urlList = new ArrayList<String>();
@@ -37,10 +36,6 @@ public class SimpleExample {
 		
 		// Reset the threadNum and recrawl a list url and print the results.
 		spider.setThreadNum(5);
-		spider.crawl(urlList);
-		System.out.println(spider.getResult());
-		
-		
+		System.out.println(spider.crawl(urlList));
 	}
-
 }

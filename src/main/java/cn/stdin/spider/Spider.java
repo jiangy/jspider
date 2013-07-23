@@ -28,7 +28,6 @@ public class Spider {
 	int threadNum;
 	private Pattern recordPattern;
 	private List<Pattern> fieldPatternList;
-	private List<List<String>> result = new ArrayList<List<String>>();
 	
 	
 	public Spider(String regRecord, List<String> regFieldList, int threadNum) {
@@ -63,22 +62,14 @@ public class Spider {
 	public void setFieldPatternList(List<Pattern> fieldPatternList) {
 		this.fieldPatternList = fieldPatternList;
 	}
-	
-	public List<List<String>> getResult() {
-		return result;
-	}
 
-	public void setResult(List<List<String>> result) {
-		this.result = result;
-	}
-
-	public void crawl(List<String> urlList) {
+	public List<List<String>> crawl(List<String> urlList) {
 		PoolingClientConnectionManager cm = new PoolingClientConnectionManager();
 		cm.setMaxTotal(threadNum);
 		HttpClient httpClient = new DefaultHttpClient(cm);
 		ExecutorService exec = Executors.newFixedThreadPool(threadNum);
 		List<Future<List<List<String>>>> theadResult = new ArrayList<Future<List<List<String>>>>();
-		result.clear();
+		List<List<String>> result = new ArrayList<List<String>>();
 		try {
 			for(String url : urlList) {
 				theadResult.add(exec.submit(new SpiderTask(httpClient, url)));
@@ -87,8 +78,7 @@ public class Spider {
 				try {
 					result.addAll(fs.get());
 				} catch(InterruptedException e) {
-					logger.error(e);
-					return;
+					e.printStackTrace();
 				} catch(ExecutionException e) {
 					e.printStackTrace();
 				} finally {
@@ -98,11 +88,12 @@ public class Spider {
 		} finally {
 			httpClient.getConnectionManager().shutdown();
 		}
+		return result;
 	}
-	public void crawl(String url) {
+	public List<List<String>> crawl(String url) {
 		List<String> urlList = new ArrayList<String>();
 		urlList.add(url);
-		crawl(urlList);
+		return crawl(urlList);
 	}
 	
 	
@@ -140,7 +131,7 @@ public class Spider {
 		}
 		
 		private List<String> getField(List<Matcher> matcherList, String record) {
-			List<String> result = new ArrayList<String>();
+			List<String> result = new ArrayList<String>(matcherList.size());
 			for(Matcher matcher : matcherList) {
 				matcher.reset(record);
 				result.add(matcher.find() ? matcher.group(1) : null);
