@@ -25,45 +25,20 @@ import org.apache.log4j.Logger;
  */
 public class Spider {
 	static Logger logger = Logger.getLogger(Spider.class);
-	int threadNum;
-	private Pattern recordPattern;
-	private List<Pattern> fieldPatternList;
+	private final Pattern recordPattern;
+	private final List<Pattern> fieldPatternList;
 	
 	
-	public Spider(String regRecord, List<String> regFieldList, int threadNum) {
+	public Spider(String regRecord, List<String> regFieldList) {
 		recordPattern = Pattern.compile(regRecord);
 		fieldPatternList = new ArrayList<Pattern>();
 		for(String regField : regFieldList) {
 			fieldPatternList.add(Pattern.compile(regField));
 		}
-		this.threadNum = threadNum;
 	}
 
-	public int getThreadNum() {
-		return threadNum;
-	}
 
-	public void setThreadNum(int threadNum) {
-		this.threadNum = threadNum > 0 ? threadNum : 1;
-	}
-
-	public Pattern getRecordPattern() {
-		return recordPattern;
-	}
-
-	public void setRecordPattern(Pattern recordPattern) {
-		this.recordPattern = recordPattern;
-	}
-
-	public List<Pattern> getFieldPatternList() {
-		return fieldPatternList;
-	}
-
-	public void setFieldPatternList(List<Pattern> fieldPatternList) {
-		this.fieldPatternList = fieldPatternList;
-	}
-
-	public List<List<String>> crawl(List<String> urlList) {
+	public List<List<String>> crawl(List<String> urlList, int threadNum) {
 		PoolingClientConnectionManager cm = new PoolingClientConnectionManager();
 		cm.setMaxTotal(threadNum);
 		HttpClient httpClient = new DefaultHttpClient(cm);
@@ -89,6 +64,9 @@ public class Spider {
 			httpClient.getConnectionManager().shutdown();
 		}
 		return result;
+	}
+	public List<List<String>> crawl(List<String> urlList) {
+		return crawl(urlList, urlList.size());
 	}
 	public List<List<String>> crawl(String url) {
 		List<String> urlList = new ArrayList<String>();

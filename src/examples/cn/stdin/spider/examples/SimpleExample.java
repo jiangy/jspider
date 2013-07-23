@@ -20,8 +20,8 @@ public class SimpleExample {
 		regFieldList.add("<span class='date''>(\\d{2}/\\d{2}/\\d{2})");
 		regFieldList.add("<span class=\"number\">(\\d*)</span>");
 		
-		// Create a Spider with above record split regex, field split regex list and one thread.
-		Spider spider = new Spider(regRecord, regFieldList, 1);
+		// Create a Spider with above record split regex, field split regex list.
+		Spider spider = new Spider(regRecord, regFieldList);
 		
 		// Crawl a url and print result.
 		System.out.println(spider.crawl("http://pipes.yahoo.com/pipes/pipes.popular"));
@@ -34,8 +34,7 @@ public class SimpleExample {
 		urlList.add("http://pipes.yahoo.com/pipes/pipes.popular?page=5");
 		urlList.add("http://pipes.yahoo.com/pipes/pipes.popular?page=6");
 		
-		// Reset the threadNum and recrawl a list url and print the results.
-		spider.setThreadNum(5);
-		System.out.println(spider.crawl(urlList));
+		// Specify a threadNum, crawl a list url and print the results.
+		System.out.println(spider.crawl(urlList, 3));
 	}
 }
