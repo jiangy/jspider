@@ -36,5 +36,8 @@ public class SimpleExample {
 		
 		// Specify a threadNum, crawl a list url and print the results.
 		System.out.println(spider.crawl(urlList, 3));
+		
+		// Or let threadNum default to urlList.size(), that crawl every url in a single thread
+		System.out.println(spider.crawl(urlList));
 	}
 }
